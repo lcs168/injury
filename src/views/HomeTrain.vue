@@ -1,248 +1,342 @@
 <template>
-    <div class="common-layout" style="height: 100%;">
-        <el-container style="height: 100%;">
-        <el-aside width="10%" style="height: 100%;">
-            <div style="height: 100%;display: flex;
-                flex-direction: column;
-                justify-content: space-around;">
-            
-            <el-card class="box-card">
-                <el-image @click="selOne" class="imgTwo" :src="require('@/assets/leftimagebox/1.jpg')" alt="" style="height: 100%;" />
-            </el-card>
-            <el-card class="box-card">
-                <el-image @click="selTwo" class="imgTwo" :src="require('@/assets/leftimagebox/2.jpg')" alt="" style="height: 100%;" />
-            </el-card>
-            <el-card class="box-card">
-                <el-image @click="selThree" class="imgTwo" :src="require('@/assets/leftimagebox/3.jpg')" alt="" style="height: 100%;" />
-            </el-card>
-            <el-card class="box-card">
-                <el-image @click="selFour" class="imgTwo" :src="require('@/assets/leftimagebox/4.jpg')" alt="" style="height: 100%;" />
-            </el-card>
-            <el-card class="box-card">
-                <el-image @click="selFive" class="imgTwo" :src="require('@/assets/leftimagebox/5.jpg')" alt="" style="height: 100%;" />
-            </el-card>
-            <el-card class="box-card">
-                <el-image @click="selSix" class="imgTwo" :src="require('@/assets/leftimagebox/6.jpg')" alt="" style="height: 100%;" />
-            </el-card>
-            </div>
-        </el-aside>
-        <el-main style="height: 100%;">
-            <div style="width: 100%;display: flex;align-items: center;flex-direction: column;">
-                <div>请点击上传图片</div>
-                <el-upload
-                    class="avatar-uploader"
-                    action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
-                >
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                    <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-                </el-upload>
-            </div>
-            <div style="width: 100%;height: 100%;">
+  <div class="main">
+    <div class="content">
+      <!--        左侧图表    -->
+      <div class="left-content">
 
-                <el-card v-loading="loading" class="image" style="height: 60%;width: 100%;margin-top: 1%;">
-                    <el-image :src="imageRes" alt="" style="width: 100%;height: 100%;">
-                        <template #error>
-                            <div class="image-slot">
-                                <el-icon><Picture /></el-icon>
-                            </div>
-                        </template>
-                    </el-image>
-                </el-card>
-            
-            <router-link to="/study/right/fracture">
-            <el-button type="primary" style="width:100%;margin-top: 1%;height: 5%;">
-                识别为骨折，点击按钮向您推荐骨折救治方案
-            </el-button>
-            </router-link>
-            </div>
-        </el-main>
-        </el-container>
+        <div class="container">
+          <div class="centered-text">伤情数据加载</div>
+          <div class="buttons">
+
+            <el-button style="width:100px; font-size: 24px" size="big" type="primary" @click="downloadData">拍摄</el-button>
+            <el-button style="width:100px; font-size: 24px" size="big" type="primary" @click="downloadData">载入</el-button>
+
+          </div>
+          <div class="centered-text">伤情数据记录</div>
+          <div class="image-container" >
+              <div class="slide" :class="{ 'selected': selectedImageIndex === index }" v-for="(image, index) in images" :key="index" >
+                <img :src="image" alt="图片" class="bordered-image" @click="selectImage(index)" />
+              </div>
+
+          </div>
+        </div>
+
+
+
+
+      </div>
+      <!--        右侧数据表-->
+      <div class="right-content">
+        <div class="centered-text">伤情实时识别</div>
+        <div class="container" >
+          <div class="container1 left-column" >
+            <img :src="require('@/assets/leftimagebox/2.jpg')" alt="图片" class="bordered-image"/>
+          </div>
+          <div class="image-container right-column" >
+
+              <div class="slide" v-for="(image, index) in images1" :key="index">
+                <img :src="image" alt="图片" class="bordered-image"/>
+              </div>
+
+
+          </div>
+        </div>
+        <div class="centered-text">救治方案推荐</div>
+
+
+        <div class="box">
+          <span style="width: auto; font-family: bond; font-size: 20px; margin: 0 40px 0 40px">识别结果</span>
+          <span style="width: auto; font-family: bond; font-size: 20px; margin: 0 40px 0 40px">{{0.88}}</span>
+
+
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案1</el-button>
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案2</el-button>
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案3</el-button>
+
+        </div>
+        <div class="box1">
+          <span style="width: auto; font-family: bond; font-size: 20px; margin: 0 40px 0 40px">识别结果</span>
+          <span style="width: auto; font-family: bond; font-size: 20px; margin: 0 40px 0 40px">{{0.88}}</span>
+
+
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案1</el-button>
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案2</el-button>
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案3</el-button>
+
+        </div>
+        <div class="box1">
+          <span style="width: auto; font-family: bond; font-size: 20px; margin: 0 40px 0 40px">识别结果</span>
+          <span style="width: auto; font-family: bond; font-size: 20px; margin: 0 40px 0 40px">{{0.88}}</span>
+
+
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案1</el-button>
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案2</el-button>
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案3</el-button>
+
+        </div>
+
+
+
+      </div>
     </div>
-  </template>
-  
+  </div>
+</template>
+
 <script>
-import { ref } from 'vue'
-import { Picture as IconPicture } from '@element-plus/icons-vue'
-
 export default {
-    name:"homeTrain",
-    data(){
+  name:"homeTrain",
+  data(){
     return{
-        // url:"require('@/assets/imagebox/gunshot/1.jpg')"
-        videourl:"/videos/骨折识别.mp4",
-        imageUrl : ref(''),
-        loading : ref(''),
-        imageRes: ref('')
+      // url:"require('@/assets/imagebox/gunshot/1.jpg')"
+      videourl:"/videos/骨折识别.mp4",
+      videourl1:"././",
+      images: [
+        require('@/assets/leftimagebox/1.jpg'),require('@/assets/leftimagebox/2.jpg'),require('@/assets/leftimagebox/3.jpg'),require('@/assets/leftimagebox/4.jpg'),
+      ],
+      images1: [
+        require('@/assets/leftimagebox/5.jpg'),require('@/assets/leftimagebox/6.jpg'),require('@/assets/leftimagebox/1.jpg')
+      ],
+      selectedImageIndex: 1
     }
-    },
-    methods:{
-    handleAvatarSuccess(response, uploadFile) {
-      this.imageUrl = URL.createObjectURL(uploadFile.raw);
-      this.showimage()
-    //   this.loading = ref('')
-    },
-    showimage(){
-        this.loading = ref('true')
-        setTimeout(() => {
-        this.loading = ref('')
-        this.imageRes = require('@/assets/rightimagebox/1.jpg')
+  },
+  methods:{
+    selectImage(index){
+      this.selectedImageIndex = index;
+      console.log('选择了')
 
-      }, 3000);
-    },
-    beforeAvatarUpload(rawFile) {
-      if (rawFile.type !== 'image/jpeg') {
-        this.$message.error('Avatar picture must be JPG format!');
-        return false;
-      } else if (rawFile.size / 1024 / 1024 > 2) {
-        this.$message.error('Avatar picture size can not exceed 2MB!');
-        return false;
-      }
-      return true;
     },
     selOne(){
-        console.log('选择了')
-        // this.videourl='/videos/撞伤救治.mp4'
-        // window.location.replace("/homeTrain")
-        location.reload();
+      console.log('选择了')
+      // this.videourl='/videos/撞伤救治.mp4'
+      // window.location.replace("/homeTrain")
+      location.reload();
     },
     selTwo(){
-        console.log('选择了')
-        location.reload();
+      console.log('选择了')
+      location.reload();
 
     },
     selThree(){
-        console.log('选择了')
-        location.reload();
+      console.log('选择了')
+      location.reload();
 
     },
     selFour(){
-        console.log('选择了')
-        location.reload();
+      console.log('选择了')
+      location.reload();
 
     },
     selFive(){
-        console.log('选择了')
-        location.reload();
+      console.log('选择了')
+      location.reload();
 
     },
     selSix(){
-        console.log('选择了')
-        location.reload();
+      console.log('选择了')
+      location.reload();
 
-    },
-    aa(){
-        router.push("/Information");
-      },bb(){
-        router.push("/Information");
-      },cc(){
-        router.push("/Information");
-      },dd(){
-        router.push("/Information");
-      },ee(){
-        router.push("/Information");
-      },xiangshang(){
-        router.push("/Information");
-      },xiangxia(){
-        router.push("/Information");
-      },jietu(){
-        router.push("/Information");
-      },
-      },
-      created() 
-    {
-        // setTimeout(() => {
-        this.$ws.addEventListener('message', (event) => {
-        // 处理 WebSocket 消息
-        const message = event.data;
-        console.log('WebSocket消息：', message);
-        
-        if (message === 'aa_aa') {
-            this.aa(); 
-        } else if (message.includes('向上滑动')) {
-            this.xiangshang();
-        } else if (message.includes('向下滑动')) { 
-            this.xiangxia();
-        }  else if (message === 'bb_bb') {
-            this.bb();
-        } else if (message === '截图') {
-            this.jietu();
-        } else if (message === 'cc_cc') {
-            this.cc();
-        } else if (message === 'dd_dd') {
-            this.dd();
-        } else if (message === 'ee_ee') {
-            this.ee();
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+.main {
+  //min-width: 1536px;
+  user-select: none;
+  position: relative;
+
+  .content {
+    display: flex;
+
+    .left-content {
+      width: 15%;
+      height: auto;
+      margin: 20px 1.5% 60px 3.5%;
+      // align-items: center;
+      // justify-content: space-between;
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .centered-text {
+        font-size: 30px;
+        font-family: bond;
+        text-align: center;
+        margin: 20px 0 20px 0;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      .image-container {
+        width: 100%;
+        height: 600px; /* 高度自适应保持图片比例 */
+        overflow: scroll;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box; /* 计算边框和内边距在容器尺寸内 */
+        border: 1px solid #ddd; /* 外边框样式 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影样式 */
+        padding: 10px; /* 内边距 */
+      }
+
+
+
+      .slider {
+        display: flex;
+        width: max-content;
+      }
+
+      .slide {
+        flex-shrink: 0;
+        margin-bottom: 10px;
+
+        .bordered-image {
+          border: 1px solid #000; /* 边框样式 */
+          width: 100%; /* 宽度为容器的百分之百 */
+          height: auto; /* 高度自适应保持图片比例 */
+          box-sizing: border-box; /* 将边框计入图片尺寸内 */
+        }
+      }
+      .selected {
+        border: 2px solid red;
+      }
+      .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .add_button {
+          width: 35px;
+          height: 35px;
+          border: none;
+          cursor: pointer;
+          background-color: #eeeeee00;
+        }
+
+        .button-group {
+          display: flex;
+          margin-left: 20px;
+        }
+      }
+
+
+    }
+
+    .right-content {
+      width: 75%;
+      height: auto;
+      margin: 20px 1.5% 60px 3.5%;
+      align-items: center;
+      justify-content: space-between;
+
+
+
+      .centered-text {
+        font-size: 30px;
+        font-family: bond;
+        margin: 20px 0 20px 20px;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+
+      .container {
+        width: 100%;
+        height: 450px; /* 高度自适应保持图片比例 */
+        overflow: hidden;
+
+        display: flex;
+        box-sizing: border-box; /* 计算边框和内边距在容器尺寸内 */
+        border: 1px solid #ddd; /* 外边框样式 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影样式 */
+        padding: 10px; /* 内边距 */
+      }
+
+      .container1 {
+        width: 60%;
+        height: 80%;
+        margin: 0 5% 0 5%;
+
+        display: flex;
+        flex-direction: column;
+        .bordered-image {
+
+          width: auto;
+          height: 420px;
+          border: 1px solid #000; /* 边框样式 */
+          box-sizing: border-box; /* 将边框计入图片尺寸内 */
+        }
+      }
+
+      .image-container {
+        width: 30%;
+        height: 100%; /* 高度自适应保持图片比例 */
+
+        display: flex;
+        flex-direction: column;
+        overflow: scroll;
+        box-sizing: border-box; /* 计算边框和内边距在容器尺寸内 */
+        border: 1px solid #ddd; /* 外边框样式 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影样式 */
+        padding: 10px; /* 内边距 */
+      }
+
+      .slider {
+        display: flex;
+        width: max-content;
+      }
+
+      .slide {
+        flex-shrink: 0;
+        margin-bottom: 10px;
+
+        .bordered-image {
+          border: 1px solid #000; /* 边框样式 */
+          width: 100%; /* 宽度为容器的百分之百 */
+          height: auto; /* 高度自适应保持图片比例 */
+          box-sizing: border-box; /* 将边框计入图片尺寸内 */
         }
 
 
-        })
-        // }, 3000);  
-        
 
-    },
-    mounted() {
+
+
+
+
+
+
+
+
+
+      }
+      .box{
+        margin: 0 0 15px 0;
+        padding: 10px; /* 内边距 */
+        background-color: #99a9bf;
+      }
+      .box1{
+        margin: 0 0 15px 0;
+        padding: 10px; /* 内边距 */
+        background-color: #FFFFFF;
+      }
     }
+
   }
-</script>
-  
-<style>
-.box-card{
-    margin-left: 3%;
-    height: 15% !important;
-    cursor: pointer;
 }
 
-.box-card>.el-card__body{
-    padding: 0 !important;
-}
-.image>.el-card__body{
-    padding: 0 !important;
-    height: 100%;
-}
-.image{
-    margin-left: 0 !important;
-}
-.el-image{
-    height: 85%;
-    width: 100%;
-}
-.avatar-uploader .avatar {
-  width: 10vw;
-  height: 10vw;
-  display: block;
-}
-.avatar-uploader .el-upload {
-  border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: var(--el-color-primary);
-}
-
-.el-icon.avatar-uploader-icon {
-  font-size: 30px;
-  color: #8c939d;
-  width: 10vw;
-  height: 10vw;
-  text-align: center;
-}
-
-.image-slot {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background: var(--el-fill-color-light);
-  color: var(--el-text-color-secondary);
-  font-size: 5vw;
-}
 </style>
+
+
+
+homeTrain
