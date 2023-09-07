@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div style="height:calc(100vh - 50px);">
+    <div id="myGraph" style="height:calc(100vh - 50px);">
       <RelationGraph ref="seeksRelationGraph" :options="graphOptions" :on-node-click="onNodeClick"
                      :on-line-click="onLineClick"/>
     </div>
@@ -21,11 +21,59 @@ export default {
         allowSwitchJunctionPoint: true,
         defaultJunctionPoint: 'border',
       },
+      myGraphPanelSize: {width: 1080, height: 600}, // 控制图谱大小
+      graphInfo: {}, // 知识图谱信息
       center_: {x: -200, y: -100}, // 坐标轴起点
+      currentChooseNodeId: "0", // 当前选中的nodeId
     }
   },
   mounted() {
+    let self = this
+    // 设置知识图谱并展示
     this.showSeeksGraph()
+    // setTimeout(function () {
+    //   self.handleChooseNode('6')
+    // }, 0)
+    // setTimeout(function () {
+    //   self.handleChooseNode('1')
+    // }, 2000)
+    // setTimeout(function () {
+    //   self.handleChooseNode('5')
+    // }, 4000)
+    // setTimeout(function () {
+    //   self.handleChooseNode('2')
+    // }, 6000)
+    // setTimeout(function () {
+    //   self.handleChooseNode('4')
+    // }, 8000)
+    // setTimeout(function () {
+    //   self.handleChooseNode('3')
+    // }, 10000)
+    // setTimeout(function () {
+    //   self.handleZoomGraph('9')
+    // }, 0)
+    // setTimeout(function () {
+    //   self.handleZoomGraph('9')
+    // }, 2000)
+    // setTimeout(function () {
+    //   self.handleZoomGraph('9')
+    // }, 4000)
+    // setTimeout(function () {
+    //   self.handleZoomGraph('9')
+    // }, 6000)
+  },
+  created() {
+    this.$ws.addEventListener('message', (event) => {
+      // 处理 WebSocket 消息
+      const message = event.data;
+      console.log('WebSocket消息：', message);
+
+      if (message === '1' || '2' || '3' || '4' || '5' || '6' || '7' || '8') { // 切换方向指令
+        this.handleChooseNode(message);
+      } else if (message === '9' || message === '10') {
+        this.handleZoomGraph(message)
+      }
+    })
   },
   methods: {
     showSeeksGraph() {
@@ -304,17 +352,93 @@ export default {
           {"from": "s6", "to": "s63"},
         ]
       }
+      this.graphInfo = __graph_json_data
       // 以上数据中的node和link可以参考"Node节点"和"Link关系"中的参数进行配置
       this.$refs.seeksRelationGraph.setJsonData(__graph_json_data, (seeksRGGraph) => {
         // Called when the relation-graph is completed
       })
     },
+    // 展示当前选中的节点
     onNodeClick(node, $event) {
       console.log('选中: ', node.id, node.x, node.y)
+      console.log(node.targetNodes)
     },
+    // 展示当前选中的线
     onLineClick(lineObject, $event) {
       console.log('onLineClick:', lineObject)
-    }
+    },
+    // 处理根据手势缩放事件
+    handleZoomGraph(eventId) {
+      // 获取要模拟滚动的元素
+      let elements = document.querySelectorAll('span.c-mb-text');
+
+      if (eventId === '9') { //放大
+        for (let i = 0; i < elements.length; i++) {
+          let element = elements[i];
+          // 检查元素的文本内容是否为"放大"
+          if (element.textContent === '放大') {
+            element.click();
+          }
+        }
+      } else if (eventId === '10') { // 缩小
+        for (let i = 0; i < elements.length; i++) {
+          let element = elements[i];
+          // 检查元素的文本内容是否为"缩小"
+          if (element.textContent === '缩小') {
+            element.click();
+          }
+        }
+      }
+    },
+    // 处理根据手势选择节点事件
+    handleChooseNode(eventId) {
+      let currentNode = this.$refs.seeksRelationGraph.getNodeById(this.currentChooseNodeId)
+      let nodes = currentNode.targetNodes
+      for (let i = 0; i < nodes.length; i++) {
+        if (eventId === '1') {                  //上
+          if (nodes[i].y < currentNode.y && nodes[i].x === currentNode.x) {
+            this.currentChooseNodeId = nodes[i].id
+            break
+          }
+        } else if (eventId === '5') {           //下
+          if (nodes[i].y > currentNode.y && nodes[i].x === currentNode.x) {
+            this.currentChooseNodeId = nodes[i].id
+            break
+          }
+        } else if (eventId === '7') {           //左
+          if (nodes[i].x < currentNode.x && nodes[i].y === currentNode.y) {
+            this.currentChooseNodeId = nodes[i].id
+            break
+          }
+        } else if (eventId === '3') {           //右
+          if (nodes[i].x > currentNode.x && nodes[i].y === currentNode.y) {
+            this.currentChooseNodeId = nodes[i].id
+            break
+          }
+        } else if (eventId === '8') {           //左上
+          if (nodes[i].y < currentNode.y && nodes[i].x < currentNode.x) {
+            this.currentChooseNodeId = nodes[i].id
+            break
+          }
+        } else if (eventId === '2') {           //右上
+          if (nodes[i].y < currentNode.y && nodes[i].x > currentNode.x) {
+            this.currentChooseNodeId = nodes[i].id
+            break
+          }
+        } else if (eventId === '6') {           //左下
+          if (nodes[i].y > currentNode.y && nodes[i].x < currentNode.x) {
+            this.currentChooseNodeId = nodes[i].id
+            break
+          }
+        } else if (eventId === '4') {           //右下
+          if (nodes[i].y > currentNode.y && nodes[i].x > currentNode.x) {
+            this.currentChooseNodeId = nodes[i].id
+            break
+          }
+        }
+      }
+      this.$refs.seeksRelationGraph.focusNodeById(this.currentChooseNodeId)
+    },
   }
 }
 </script>
