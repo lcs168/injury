@@ -8,8 +8,9 @@
 </template>
 
 <script>
-import {ref} from 'vue';
+import {ref, h} from 'vue';
 import RelationGraph from 'relation-graph/vue3'
+import {ElNotification} from "element-plus";
 
 export default {
   name: "RightVideoOne",
@@ -33,33 +34,39 @@ export default {
     this.showSeeksGraph()
     // setTimeout(function () {
     //   self.handleChooseNode('6')
+    //   self.handleNotification()
     // }, 0)
     // setTimeout(function () {
     //   self.handleChooseNode('1')
+    //   self.handleNotification()
     // }, 2000)
     // setTimeout(function () {
     //   self.handleChooseNode('5')
+    //   self.handleNotification()
     // }, 4000)
     // setTimeout(function () {
     //   self.handleChooseNode('2')
+    //   self.handleNotification()
     // }, 6000)
     // setTimeout(function () {
     //   self.handleChooseNode('4')
+    //   self.handleNotification()
     // }, 8000)
     // setTimeout(function () {
     //   self.handleChooseNode('3')
+    //   self.handleNotification()
     // }, 10000)
     // setTimeout(function () {
-    //   self.handleZoomGraph('9')
+    //   self.handleZoomGraph('10')
     // }, 0)
     // setTimeout(function () {
-    //   self.handleZoomGraph('9')
+    //   self.handleZoomGraph('10')
     // }, 2000)
     // setTimeout(function () {
-    //   self.handleZoomGraph('9')
+    //   self.handleZoomGraph('10')
     // }, 4000)
     // setTimeout(function () {
-    //   self.handleZoomGraph('9')
+    //   self.handleZoomGraph('10')
     // }, 6000)
   },
   created() {
@@ -366,6 +373,20 @@ export default {
     // 展示当前选中的线
     onLineClick(lineObject, $event) {
       console.log('onLineClick:', lineObject)
+    },
+    // 处理点击节点事件
+    handleClickNode(eventId) {
+      let currentNode = this.$refs.seeksRelationGraph.getNodeById(this.currentChooseNodeId) // 选择当前节点
+      // todo 执行接下来要做的事情
+    },
+    // 处理弹窗事件
+    handleNotification(eventId) {
+      // todo 使用element-plus的弹窗，内部内容根据需要修改
+      ElNotification({
+        title: 'Title',
+        message: h('i', {style: 'color: teal'}, 'This is a reminder'),
+        duration: 20000 // 弹窗持续时间20s
+      })
     },
     // 处理根据手势缩放事件
     handleZoomGraph(eventId) {
