@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import router from '@/router/index.js';
 import {ref, h} from 'vue';
 import RelationGraph from 'relation-graph/vue3'
 import {ElNotification} from "element-plus";
@@ -369,6 +370,54 @@ export default {
     onNodeClick(node, $event) {
       console.log('选中: ', node.id, node.x, node.y)
       console.log(node.targetNodes)
+      // 在节点点击事件处理程序中执行跳转操作
+      if (node.id ==="s11"){
+        router.push("/study/right/1");
+      }
+      if (node.id ==="s12"){
+        router.push("/study/right/burn");
+      }
+        if (node.id ==="s13"){
+        router.push("/study/right/burnDrug"); }
+        if (node.id ==="s21"){
+        router.push("/study/right/2"); }
+        if (node.id ==="s22"){
+        router.push("/study/right/fracture"); }
+        if (node.id ==="s23"){
+        router.push("/study/right/fractureDrug"); }
+        if (node.id ==="s31"){
+        router.push("/study/right/3"); }
+        if (node.id ==="s32"){
+        router.push("/study/right/bruise"); }
+        if (node.id ==="s33"){ 
+        router.push("/study/right/bruiseDrug"); }
+        if (node.id ==="s41"){
+        router.push("/study/right/4"); }
+        if (node.id ==="s42"){
+        router.push("/study/right/scratches"); }
+        if (node.id ==="s43"){
+        router.push("/study/right/scratchesDrug"); }
+        if (node.id ==="s51"){
+        router.push("/study/right/5"); }
+        if (node.id ==="s52"){
+        router.push("/study/right/gunshot");
+      }
+      if (node.id ==="s53"){
+        router.push("/study/right/gunshotDrug");
+      }
+      if (node.id ==="s61"){
+        router.push("/study/right/6");
+      }
+      if (node.id ==="s62"){
+        router.push("/study/right/explosion");
+      }
+      if (node.id ==="s63"){
+        router.push("/study/right/explosionDrug");
+      }
+
+    }
+
+
     },
     // 展示当前选中的线
     onLineClick(lineObject, $event) {
@@ -378,6 +427,7 @@ export default {
     handleClickNode(eventId) {
       let currentNode = this.$refs.seeksRelationGraph.getNodeById(this.currentChooseNodeId) // 选择当前节点
       // todo 执行接下来要做的事情
+        
     },
     // 处理弹窗事件
     handleNotification(eventId) {
@@ -461,7 +511,7 @@ export default {
       this.$refs.seeksRelationGraph.focusNodeById(this.currentChooseNodeId)
     },
   }
-}
+
 </script>
 
 <style>

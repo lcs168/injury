@@ -134,7 +134,7 @@
 
     <el-dialog
     v-model="dialogVisible"
-    title="Tips：请允许访问摄像头权限进行拍照"
+    title="Tips：请允许访问摄像头权限进行实时识别"
     width="40%"
   > 
     <div style="width: 90%;margin-left: 10%;">
@@ -143,19 +143,19 @@
     
 
 
-      <el-button type="primary" @click="takePhoto()" style="width: 100%;height: 20%;">拍照</el-button>
+      <el-button type="primary" @click="takePhoto()" style="width: 100%;height: 20%;">识别</el-button>
       <canvas style="width: 100%; height: 40vh;"
       ref="canvasElement"></canvas>
       <!-- <img :src="photoUrl" v-if="photoUrl" alt="拍摄照片"> -->
     </div>
-    <template #footer>
+    <!-- <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="dialogVisible = false,sendPhoto()">
           提交
         </el-button>
       </span>
-    </template>
+    </template> -->
   </el-dialog>
 
 
