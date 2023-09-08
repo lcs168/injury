@@ -18,7 +18,7 @@ const routes = [
       { path:'/examine',name:'Examine',component:()=>import('../views/Examine.vue')},
       { path: '/notice',name: 'notice',component: () => import('../views/Notice.vue')},
       { path:'/ExamineInner',name:'ExamineInner',component:()=>import('../views/ExamineInner.vue')},
-      { path:'/change',name:'change',component:()=>import('../views/change.vue')},
+      // { path:'/change',name:'change',component:()=>import('../views/change.vue')},
       { path:'/body',name:'body',component:()=>import('../views/body.vue')},
     ]
   },

@@ -24,9 +24,10 @@
         <router-link to="/home" style="margin-left: 6.3%;">
         <el-menu-item to="/home" index='1'>首&#8198;页</el-menu-item>
         </router-link>
-        <router-link to="/change" style="margin-left: 6.3%;">
+        <!-- <router-link to="/change" style="margin-left: 6.3%;">
         <el-menu-item to="/change" index='1'>缩放</el-menu-item>
-        </router-link>
+        </router-link> -->
+        
         <router-link to="/body" style="margin-left: 6.3%;">
         <el-menu-item to="/body" index='1'>识别验证</el-menu-item>
         </router-link>

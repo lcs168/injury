@@ -43,15 +43,20 @@
         </div>
         <div class="centered-text">救治方案推荐</div>
 
-
+        <!-- <div>
+          <button @click="speakText">播放语音</button>
+        </div> -->
         <div class="box">
           <span style="width: auto; font-family: bond; font-size: 20px; margin: 0 40px 0 40px">识别结果</span>
           <span style="width: auto; font-family: bond; font-size: 20px; margin: 0 40px 0 40px">{{0.88}}</span>
 
 
-          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案1</el-button>
-          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案2</el-button>
-          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案3</el-button>
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="speakText">推荐方案1</el-button>
+          <audio ref="audioElement" @canplaythrough="startPlayback">
+            <source src="C:\Users\11985\Desktop\0905\admin-front\admin-front\public\MP3\盛夏-毛不易.320.mp3" type="audio/mpeg">您的浏览器不支持音频播放。
+          </audio>
+          <!-- <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案2</el-button>
+          <el-button style="width:180px; font-size: 24px; margin: 0 40px 0 40px" size="big" type="primary" @click="downloadData">推荐方案3</el-button> -->
 
         </div>
         <div class="box1">
@@ -84,6 +89,7 @@
 
 <script>
 export default {
+  
   name:"homeTrain",
   data(){
     return{
@@ -96,9 +102,11 @@ export default {
       images1: [
         require('@/assets/leftimagebox/5.jpg'),require('@/assets/leftimagebox/6.jpg'),require('@/assets/leftimagebox/1.jpg')
       ],
-      selectedImageIndex: 1
+      selectedImageIndex: 1,
+      output: '' // 初始化一个空字符串来存储输出的文本
     }
   },
+  
   methods:{
     selectImage(index){
       this.selectedImageIndex = index;
@@ -135,6 +143,39 @@ export default {
       console.log('选择了')
       location.reload();
 
+    },
+    
+    playAudio() {
+      const audioElement = this.$refs.audioElement;
+      this.output = '1'
+      // 在这里不直接播放，等待 canplaythrough 事件触发后再播放
+    },
+    startPlayback() {
+      const audioElement = this.$refs.audioElement;
+      audioElement.play();
+      
+    },
+    pauseAudio() {
+      const audioElement = this.$refs.audioElement;
+      audioElement.pause();
+    },
+    speakText() {
+      // 检查浏览器是否支持SpeechSynthesis API
+      if ('speechSynthesis' in window) {
+        const speechSynthesis = window.speechSynthesis;
+        const textToSpeak = '你好，这是一个语音示例。'; // 要合成的文本
+
+        // 创建一个SpeechSynthesisUtterance对象
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+
+        // 使用默认的语音
+        utterance.voice = speechSynthesis.getVoices()[0];
+
+        // 开始语音合成
+        speechSynthesis.speak(utterance);
+      } else {
+        alert('抱歉，你的浏览器不支持语音合成功能。');
+      }
     }
   }
 }

@@ -21,12 +21,12 @@
                     <router-link to="/information">
                     <el-menu-item @click="personaldata" index="1"><img id="personaldata" style="width: 3vh;margin-right: 0.5vw;line-height: 5vh;" src="../assets/icon/个人资料.png"/> 个人资料</el-menu-item>
                     </router-link>
-                    <router-link to="/trainingResults">
+                    <!-- <router-link to="/trainingResults">
                     <el-menu-item @click="TrainingResults" index="2"><img id="TrainingResults" style="width: 3vh;margin-right: 0.5vw;line-height: 5vh;" src="../assets/icon/成绩.png"/> 训练成绩</el-menu-item>
                     </router-link>
                     <router-link to="/studySchedule">
                     <el-menu-item @click="studySchedule" index="3"><img id="studySchedule" style="width: 3vh;margin-right: 0.5vw;line-height: 5vh;" src="../assets/icon/进度.png"/> 学习进度</el-menu-item>
-                    </router-link>
+                    </router-link> -->
                 </el-menu>
                 </div>
             </div>
